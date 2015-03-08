@@ -2,6 +2,7 @@ organization := "org.caoilte"
 name := "social-terminal"
 version := "0.1-SNAPSHOT"
 scalaVersion := "2.11.6"
+(run in Compile) <<= (run in Compile) dependsOn (test in Test)
 libraryDependencies ++= Seq(
   "org.scalatest" %% "scalatest" % "2.2.4" % "test",
   "jline" % "jline" % "2.12",

@@ -3,7 +3,7 @@ A SINGLE PROCESS COMMAND LINE SOCIAL NETWORK
 
 This project was written with Scala and SBT (Simple Build Tool).
 
-It uses the [JLine] to read user input and [scala-parser-combinators] to parse it.
+It uses the [JLine] to read user input and [Scala Parser Combinators][scala-parser-combinators] to parse it.
 
 In order to build and run the application you simply need to install SBT as instructed [here][installingSBT]
 

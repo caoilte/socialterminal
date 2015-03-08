@@ -1,7 +1,5 @@
 package org.caoilte.socialterminal
 
-import java.io.{FileDescriptor, FileInputStream}
-
 import jline.console._
 import jline.console.completer._
 import org.joda.time.DateTime
