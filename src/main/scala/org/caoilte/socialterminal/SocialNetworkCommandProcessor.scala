@@ -5,12 +5,12 @@ import scalaz.{\/-, \/}
 
 
 sealed trait Command {
-  def user:String
+  def userName:String
 }
-case class ReadCommand(user:String, timeNow:DateTime) extends Command
-case class WallCommand(user:String, timeNow:DateTime) extends Command
-case class FollowCommand(user:String, otherUser:String) extends Command
-case class PostCommand(user:String, post:String, timeNow:DateTime) extends Command
+case class ReadCommand(userName:String, timeNow:DateTime) extends Command
+case class WallCommand(userName:String, timeNow:DateTime) extends Command
+case class FollowCommand(userName:String, otherUserName:String) extends Command
+case class PostCommand(userName:String, post:String, timeNow:DateTime) extends Command
 
 
 class SocialNetworkCommandProcessor extends SocialMessageFormatter {
@@ -21,14 +21,14 @@ class SocialNetworkCommandProcessor extends SocialMessageFormatter {
   }
 
   private def userOrError(command: Command):String\/User = command match {
-    case PostCommand(user, _, _) => \/-(network.userOrNewUser(user))
-    case otherCommand => network.userOrError(otherCommand.user)
+    case PostCommand(userName, _, _) => \/-(network.userOrNewUser(userName))
+    case otherCommand => network.userOrError(otherCommand.userName)
   }
 
   private def handleUserAndCommand(user:User, command:Command): String\/List[String] = {
     command match {
-      case PostCommand(user, message, timeNow) => {
-        network.userOrNewUser(user).post(message, timeNow)
+      case PostCommand(_, message, timeNow) => {
+        user.post(message, timeNow)
         \/-(Nil)
       }
       case ReadCommand(_, timeNow) => {
@@ -37,8 +37,8 @@ class SocialNetworkCommandProcessor extends SocialMessageFormatter {
       case WallCommand(_, timeNow) => {
         \/-(prettyFormatEvents(user.wall(), true, timeNow))
       }
-      case FollowCommand(_, otherName) => {
-        network.userOrError(otherName).map {
+      case FollowCommand(_, otherUserName) => {
+        network.userOrError(otherUserName).map {
           otherUser => {
             user.follow(otherUser)
             Nil
